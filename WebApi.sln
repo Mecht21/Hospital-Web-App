@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{62D05E12-B6C0-4CA0-A6FD-A17BFEF80B0F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01- Common", "01- Common", "{4C82C2BE-E52C-48D8-B5A1-564E1334F7A7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02- Model", "02- Model", "{88126453-D6FA-42DE-A492-44803BAAFC6F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03- Data Access", "03- Data Access", "{235CFDAD-63E3-4293-851C-D53612B91E80}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04- Rest Client", "04- Rest Client", "{E96215C1-3474-45CB-BAAB-F4DA592CDBB9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05- Business Logic", "05- Business Logic", "{9E0DA47F-0BB4-417D-9243-D937E6C04780}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06- Web API", "06- Web API", "{C6214E0C-B4BB-4E39-85ED-7A93DC912735}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{62D05E12-B6C0-4CA0-A6FD-A17BFEF80B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62D05E12-B6C0-4CA0-A6FD-A17BFEF80B0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62D05E12-B6C0-4CA0-A6FD-A17BFEF80B0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62D05E12-B6C0-4CA0-A6FD-A17BFEF80B0F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1BED5B9D-4CBB-493C-92BA-833699ACCEC6}
+	EndGlobalSection
+EndGlobal
