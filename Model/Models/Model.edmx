@@ -1,0 +1,384 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Doctor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idCart" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="lastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="secondSurname" Type="varchar" MaxLength="50" />
+          <Property Name="isSpecialist" Type="bit" Nullable="false" />
+          <Property Name="enabled" Type="bit" Nullable="false" />
+          <Property Name="erased" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Egress">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="date" Type="datetime" />
+          <Property Name="amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="erased" Type="bit" Nullable="false" />
+          <Property Name="doctorId" Type="bigint" Nullable="false" />
+          <Property Name="ingressId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ingress">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="date" Type="datetime" Nullable="false" />
+          <Property Name="roomNumber" Type="int" Nullable="false" />
+          <Property Name="bedNumber" Type="int" Nullable="false" />
+          <Property Name="diagnosis" Type="varchar(max)" Nullable="false" />
+          <Property Name="observation" Type="varchar(max)" />
+          <Property Name="erased" Type="bit" Nullable="false" />
+          <Property Name="doctorId" Type="bigint" Nullable="false" />
+          <Property Name="pacientId" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idCard" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="lastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="secondSurname" Type="varchar" MaxLength="50" />
+          <Property Name="direction" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="cellPhone" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="erased" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Egress_Doctor">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="Egress" Type="Self.Egress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Egress">
+              <PropertyRef Name="doctorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Egress_Ingress">
+          <End Role="Ingress" Type="Self.Ingress" Multiplicity="1" />
+          <End Role="Egress" Type="Self.Egress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ingress">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Egress">
+              <PropertyRef Name="ingressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ingress_Doctor">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="Ingress" Type="Self.Ingress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Ingress">
+              <PropertyRef Name="doctorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ingress_Ingress">
+          <End Role="Ingress" Type="Self.Ingress" Multiplicity="1" />
+          <End Role="Ingress1" Type="Self.Ingress" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Ingress">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Ingress1">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ingress_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Ingress" Type="Self.Ingress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Ingress">
+              <PropertyRef Name="pacientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Egress" EntityType="Self.Egress" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ingress" EntityType="Self.Ingress" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Patient" EntityType="Self.Patient" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Egress_Doctor" Association="Self.FK_Egress_Doctor">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="Egress" EntitySet="Egress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Egress_Ingress" Association="Self.FK_Egress_Ingress">
+            <End Role="Ingress" EntitySet="Ingress" />
+            <End Role="Egress" EntitySet="Egress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ingress_Doctor" Association="Self.FK_Ingress_Doctor">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="Ingress" EntitySet="Ingress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ingress_Ingress" Association="Self.FK_Ingress_Ingress">
+            <End Role="Ingress" EntitySet="Ingress" />
+            <End Role="Ingress1" EntitySet="Ingress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ingress_Patient" Association="Self.FK_Ingress_Patient">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Ingress" EntitySet="Ingress" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Doctor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idCart" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="lastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="secondSurname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isSpecialist" Type="Boolean" Nullable="false" />
+          <Property Name="enabled" Type="Boolean" Nullable="false" />
+          <Property Name="erased" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Egress" Relationship="Self.FK_Egress_Doctor" FromRole="Doctor" ToRole="Egress" />
+          <NavigationProperty Name="Ingress" Relationship="Self.FK_Ingress_Doctor" FromRole="Doctor" ToRole="Ingress" />
+        </EntityType>
+        <EntityType Name="Egress">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date" Type="DateTime" Precision="3" />
+          <Property Name="amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="erased" Type="Boolean" Nullable="false" />
+          <Property Name="doctorId" Type="Int64" Nullable="false" />
+          <Property Name="ingressId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Doctor" Relationship="Self.FK_Egress_Doctor" FromRole="Egress" ToRole="Doctor" />
+          <NavigationProperty Name="Ingress" Relationship="Self.FK_Egress_Ingress" FromRole="Egress" ToRole="Ingress" />
+        </EntityType>
+        <EntityType Name="Ingress">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="roomNumber" Type="Int32" Nullable="false" />
+          <Property Name="bedNumber" Type="Int32" Nullable="false" />
+          <Property Name="diagnosis" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="observation" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="erased" Type="Boolean" Nullable="false" />
+          <Property Name="doctorId" Type="Int64" Nullable="false" />
+          <Property Name="pacientId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Doctor" Relationship="Self.FK_Ingress_Doctor" FromRole="Ingress" ToRole="Doctor" />
+          <NavigationProperty Name="Egress" Relationship="Self.FK_Egress_Ingress" FromRole="Ingress" ToRole="Egress" />
+          <NavigationProperty Name="Ingress1" Relationship="Self.FK_Ingress_Ingress" FromRole="Ingress" ToRole="Ingress1" />
+          <NavigationProperty Name="Ingress2" Relationship="Self.FK_Ingress_Ingress" FromRole="Ingress1" ToRole="Ingress" />
+          <NavigationProperty Name="Patient" Relationship="Self.FK_Ingress_Patient" FromRole="Ingress" ToRole="Patient" />
+        </EntityType>
+        <EntityType Name="Patient">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idCard" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="lastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="secondSurname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="direction" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="cellPhone" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="erased" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Ingress" Relationship="Self.FK_Ingress_Patient" FromRole="Patient" ToRole="Ingress" />
+        </EntityType>
+        <Association Name="FK_Egress_Doctor">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="Egress" Type="Self.Egress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Egress">
+              <PropertyRef Name="doctorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ingress_Doctor">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="Ingress" Type="Self.Ingress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Ingress">
+              <PropertyRef Name="doctorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Egress_Ingress">
+          <End Role="Ingress" Type="Self.Ingress" Multiplicity="1" />
+          <End Role="Egress" Type="Self.Egress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ingress">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Egress">
+              <PropertyRef Name="ingressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ingress_Ingress">
+          <End Role="Ingress" Type="Self.Ingress" Multiplicity="1" />
+          <End Role="Ingress1" Type="Self.Ingress" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Ingress">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Ingress1">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ingress_Patient">
+          <End Role="Patient" Type="Self.Patient" Multiplicity="1" />
+          <End Role="Ingress" Type="Self.Ingress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Ingress">
+              <PropertyRef Name="pacientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DbConnection" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Doctor" EntityType="Self.Doctor" />
+          <EntitySet Name="Egress" EntityType="Self.Egress" />
+          <EntitySet Name="Ingress" EntityType="Self.Ingress" />
+          <EntitySet Name="Patient" EntityType="Self.Patient" />
+          <AssociationSet Name="FK_Egress_Doctor" Association="Self.FK_Egress_Doctor">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="Egress" EntitySet="Egress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ingress_Doctor" Association="Self.FK_Ingress_Doctor">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="Ingress" EntitySet="Ingress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Egress_Ingress" Association="Self.FK_Egress_Ingress">
+            <End Role="Ingress" EntitySet="Ingress" />
+            <End Role="Egress" EntitySet="Egress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ingress_Ingress" Association="Self.FK_Ingress_Ingress">
+            <End Role="Ingress" EntitySet="Ingress" />
+            <End Role="Ingress1" EntitySet="Ingress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ingress_Patient" Association="Self.FK_Ingress_Patient">
+            <End Role="Patient" EntitySet="Patient" />
+            <End Role="Ingress" EntitySet="Ingress" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="DbConnection">
+          <EntitySetMapping Name="Doctor">
+            <EntityTypeMapping TypeName="Model.Doctor">
+              <MappingFragment StoreEntitySet="Doctor">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idCart" ColumnName="idCart" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="secondSurname" ColumnName="secondSurname" />
+                <ScalarProperty Name="isSpecialist" ColumnName="isSpecialist" />
+                <ScalarProperty Name="enabled" ColumnName="enabled" />
+                <ScalarProperty Name="erased" ColumnName="erased" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Egress">
+            <EntityTypeMapping TypeName="Model.Egress">
+              <MappingFragment StoreEntitySet="Egress">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="erased" ColumnName="erased" />
+                <ScalarProperty Name="doctorId" ColumnName="doctorId" />
+                <ScalarProperty Name="ingressId" ColumnName="ingressId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ingress">
+            <EntityTypeMapping TypeName="Model.Ingress">
+              <MappingFragment StoreEntitySet="Ingress">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="roomNumber" ColumnName="roomNumber" />
+                <ScalarProperty Name="bedNumber" ColumnName="bedNumber" />
+                <ScalarProperty Name="diagnosis" ColumnName="diagnosis" />
+                <ScalarProperty Name="observation" ColumnName="observation" />
+                <ScalarProperty Name="erased" ColumnName="erased" />
+                <ScalarProperty Name="doctorId" ColumnName="doctorId" />
+                <ScalarProperty Name="pacientId" ColumnName="pacientId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Patient">
+            <EntityTypeMapping TypeName="Model.Patient">
+              <MappingFragment StoreEntitySet="Patient">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idCard" ColumnName="idCard" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="secondSurname" ColumnName="secondSurname" />
+                <ScalarProperty Name="direction" ColumnName="direction" />
+                <ScalarProperty Name="cellPhone" ColumnName="cellPhone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="erased" ColumnName="erased" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
